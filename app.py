@@ -91,12 +91,38 @@ with st.expander("Filter providers"):
     )
 
 # ── Compute ───────────────────────────────────────────────────────────────────
+from remit.compare import PROVIDER_CURRENCY_LIMITS
+
+# Filter to providers that actually support this corridor
+if selected:
+    supported = [p for p in selected if currency in PROVIDER_CURRENCY_LIMITS.get(p, [currency])]
+    if len(supported) < len(selected):
+        unsupported = [p for p in selected if p not in supported]
+        st.info(
+            f"⚠️ {', '.join(unsupported)} {'does' if len(unsupported)==1 else 'do'} not list "
+            f"{currency}→KES as a supported corridor. Showing supported providers only.",
+            icon="ℹ️"
+        )
+else:
+    supported = [p for p, currs in PROVIDER_CURRENCY_LIMITS.items() if currency in currs]
+
 try:
     with st.spinner("Getting live exchange rate…"):
-        result = compare(send_amount, from_currency=currency, providers=selected or None)
+        result = compare(send_amount, from_currency=currency, providers=supported or None)
 except Exception as e:
     st.error(f"Could not fetch rates: {e}")
     st.stop()
+
+# Rate freshness indicator
+is_fallback = "fallback" in result.rate_source
+if is_fallback:
+    st.warning(
+        f"⚠️ Live rate unavailable — using a recent hardcoded fallback rate for "
+        f"{currency}→KES. Verify on your provider's website before sending.",
+        icon="⚠️"
+    )
+else:
+    st.caption(f"📡 Mid-market rate sourced: {result.rate_source}")
 
 # ── Headline cards ────────────────────────────────────────────────────────────
 st.markdown("---")
@@ -142,11 +168,12 @@ st.markdown(cards_html, unsafe_allow_html=True)
 # ── Mid-market context ────────────────────────────────────────────────────────
 st.markdown("---")
 mid_kes = send_amount * result.mid_market_rate
+source_note = "via open.er-api.com" if "live" in result.rate_source else "fallback estimate"
 st.caption(
     f"Mid-market rate: **1 {currency} = {result.mid_market_rate:.2f} KES** "
-    f"(via Frankfurter / ECB). "
+    f"({source_note}). "
     f"{currency} {send_amount:.0f} at mid-market = **KES {mid_kes:,.0f}**. "
-    f"No provider charges this rate — the gap is their margin."
+    f"No provider gives you this rate — the gap is their margin."
 )
 
 # ── Full comparison table ─────────────────────────────────────────────────────

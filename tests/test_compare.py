@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 
 def _mock_rate(from_currency: str, to_currency: str = "KES") -> float:
     rates = {"USD": 129.50, "GBP": 164.20, "EUR": 140.80, "CAD": 95.30}
-    return rates.get(from_currency, 129.50)
+    return rates.get(from_currency, 129.50), "live (mock)"
 
 
 class TestQuote:
@@ -161,7 +161,7 @@ class TestCompareFunction:
         top_2 = {q.provider for q in ranked[:2]}
         assert "Wise" in top_2 or "LemFi" in top_2  # either is fine
 
-    @patch("remit.compare.get_mid_market_rate", return_value=0.0)
+    @patch("remit.compare.get_mid_market_rate", return_value=(0.0, "live (mock)"))
     def test_zero_rate_raises(self, mock_rate):
         with pytest.raises(ValueError, match="exchange rate"):
             compare(200)
@@ -171,10 +171,10 @@ class TestRateFallback:
     def test_fallback_returns_nonzero_for_usd(self):
         # Test that if API fails, fallback works
         with patch("urllib.request.urlopen", side_effect=Exception("network error")):
-            rate = get_mid_market_rate("USD", "KES")
+            rate, source = get_mid_market_rate("USD", "KES")
         assert rate > 0
 
     def test_fallback_gbp_kes(self):
         with patch("urllib.request.urlopen", side_effect=Exception("network error")):
-            rate = get_mid_market_rate("GBP", "KES")
+            rate, source = get_mid_market_rate("GBP", "KES")
         assert rate > 130  # GBP/KES is always > 130

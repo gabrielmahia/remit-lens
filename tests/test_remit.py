@@ -108,30 +108,30 @@ class TestProviderProfiles:
 # ── Compare engine ────────────────────────────────────────────────────────────
 
 class TestCompare:
-    @patch("remit.compare.get_mid_market_rate", return_value=129.50)
+    @patch("remit.compare.get_mid_market_rate", return_value=(129.50, "live (mock)"))
     def test_compare_returns_all_providers(self, _mock):
         result = compare(200, "USD")
         assert len(result.quotes) == len(_PROVIDER_PROFILES)
 
-    @patch("remit.compare.get_mid_market_rate", return_value=129.50)
+    @patch("remit.compare.get_mid_market_rate", return_value=(129.50, "live (mock)"))
     def test_compare_provider_subset(self, _mock):
         result = compare(200, "USD", providers=["Wise", "Remitly"])
         assert len(result.quotes) == 2
         names = {q.provider for q in result.quotes}
         assert names == {"Wise", "Remitly"}
 
-    @patch("remit.compare.get_mid_market_rate", return_value=129.50)
+    @patch("remit.compare.get_mid_market_rate", return_value=(129.50, "live (mock)"))
     def test_all_quotes_marked_estimated(self, _mock):
         result = compare(100, "USD")
         assert all(q.estimated for q in result.quotes)
 
-    @patch("remit.compare.get_mid_market_rate", return_value=129.50)
+    @patch("remit.compare.get_mid_market_rate", return_value=(129.50, "live (mock)"))
     def test_receive_amount_is_positive(self, _mock):
         result = compare(500, "USD")
         for q in result.quotes:
             assert q.receive_amount > 0
 
-    @patch("remit.compare.get_mid_market_rate", return_value=129.50)
+    @patch("remit.compare.get_mid_market_rate", return_value=(129.50, "live (mock)"))
     def test_mid_market_rate_in_result(self, _mock):
         result = compare(200, "GBP")
         assert result.mid_market_rate == 129.50
@@ -142,10 +142,11 @@ class TestCompare:
 class TestMidMarketRate:
     @patch("urllib.request.urlopen", side_effect=Exception("network down"))
     def test_falls_back_gracefully(self, _mock):
-        rate = get_mid_market_rate("USD", "KES")
+        rate, source = get_mid_market_rate("USD", "KES")
         assert rate > 0  # returns hardcoded fallback
+        assert "fallback" in source
 
     @patch("urllib.request.urlopen", side_effect=Exception("network down"))
     def test_fallback_gbp_kes(self, _mock):
-        rate = get_mid_market_rate("GBP", "KES")
+        rate, source = get_mid_market_rate("GBP", "KES")
         assert rate > 100  # GBP is worth more than 100 KES

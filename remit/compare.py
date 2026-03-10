@@ -68,6 +68,7 @@ class Comparison:
     send_amount: float
     mid_market_rate: float
     quotes: list[Quote]
+    rate_source: str = "unknown"
     retrieved_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     @property
@@ -98,32 +99,52 @@ class Comparison:
 
 # ── Exchange rate fetching ────────────────────────────────────────────────────
 
-def get_mid_market_rate(from_currency: str, to_currency: str = "KES") -> float:
-    """Fetch mid-market exchange rate from Open Exchange Rates (free, no key needed via Frankfurter).
+def get_mid_market_rate(from_currency: str, to_currency: str = "KES") -> tuple[float, str]:
+    """Fetch mid-market exchange rate from open.er-api.com (free, no key, covers all corridors).
 
-    Uses api.frankfurter.app — ECB rates, updated daily, free, no API key.
-    Falls back to a hardcoded recent rate if the API is unavailable.
+    Primary: open.er-api.com — updated daily, covers USD/GBP/EUR/CAD/AED/AUD → KES.
+    Fallback: hardcoded rates (labelled STALE in UI).
+
+    Returns:
+        (rate, source) where source is "live" or "fallback-YYYY-MM-DD"
     """
     FALLBACKS = {
         ("USD", "KES"): 129.50,
-        ("GBP", "KES"): 164.20,
-        ("EUR", "KES"): 140.80,
-        ("CAD", "KES"): 95.30,
-        ("AED", "KES"): 35.25,
-        ("AUD", "KES"): 84.60,
+        ("GBP", "KES"): 172.50,
+        ("EUR", "KES"): 149.40,
+        ("CAD", "KES"): 95.20,
+        ("AED", "KES"): 35.17,
+        ("AUD", "KES"): 90.60,
     }
     try:
-        url = f"https://api.frankfurter.app/latest?from={from_currency}&to={to_currency}"
-        req = urllib.request.Request(url, headers={"User-Agent": "remit-lens/0.1"})
+        url = f"https://open.er-api.com/v6/latest/{from_currency}"
+        req = urllib.request.Request(url, headers={"User-Agent": "remit-lens/0.2"})
         with urllib.request.urlopen(req, timeout=8) as resp:
             data = json.loads(resp.read())
-        rate = data["rates"].get(to_currency)
+        rate = data.get("rates", {}).get(to_currency)
         if rate and isinstance(rate, (int, float)) and rate > 0:
-            return float(rate)
+            updated = data.get("time_last_update_utc", "")[:16]
+            return float(rate), f"live ({updated} UTC)"
     except Exception:
         pass
-    return FALLBACKS.get((from_currency, to_currency), 0.0)
+    fallback_rate = FALLBACKS.get((from_currency, to_currency), 0.0)
+    return fallback_rate, "fallback — verify before sending"
 
+
+# ── Provider currency corridor support ───────────────────────────────────────
+# Not all providers support every corridor with the same fees/spreads.
+# AED→KES is primarily served by Wise, WorldRemit, and Western Union (UAE remittance corridor).
+# AUD→KES is less mainstream — Wise and WorldRemit are the main options.
+# Spreads marked * are less well-documented for non-USD corridors and may be wider.
+PROVIDER_CURRENCY_LIMITS: dict[str, list[str]] = {
+    "Wise":          ["USD", "GBP", "EUR", "CAD", "AUD", "AED"],
+    "Remitly":       ["USD", "GBP", "EUR", "CAD"],
+    "WorldRemit":    ["USD", "GBP", "EUR", "CAD", "AUD", "AED"],
+    "Western Union": ["USD", "GBP", "EUR", "CAD", "AUD", "AED"],
+    "Sendwave":      ["USD", "GBP"],
+    "Mukuru":        ["USD", "GBP", "EUR"],
+    "LemFi":         ["USD", "GBP", "EUR", "CAD"],
+}
 
 # ── Provider rate tables ──────────────────────────────────────────────────────
 # Rates are estimated from publicly listed provider rates, updated manually.
@@ -229,7 +250,7 @@ def compare(
         for q in result.ranked():
             print(q)
     """
-    mid_rate = get_mid_market_rate(from_currency, to_currency)
+    mid_rate, rate_source = get_mid_market_rate(from_currency, to_currency)
     if mid_rate <= 0:
         raise ValueError(f"Could not get exchange rate for {from_currency}→{to_currency}")
 
@@ -282,4 +303,5 @@ def compare(
         send_amount=send_amount,
         mid_market_rate=mid_rate,
         quotes=quotes,
+        rate_source=rate_source,
     )
