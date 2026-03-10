@@ -8,7 +8,7 @@ import streamlit as st
 from remit.compare import compare, _PROVIDER_PROFILES
 
 st.set_page_config(
-    page_title="RemitLens — Send Money to Kenya",
+    page_title="Peleka — Send Money to Kenya",
     page_icon="💸",
     layout="centered",
 )
@@ -53,7 +53,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── Header ────────────────────────────────────────────────────────────────────
-st.title("💸 RemitLens")
+st.title("💸 Peleka")
 st.subheader("Find the best way to send money to Kenya")
 
 st.warning(
