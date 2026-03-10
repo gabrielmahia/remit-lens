@@ -39,6 +39,16 @@ st.markdown("""
     font-style: italic;
     margin-top: 0.5rem;
 }
+@media (max-width: 768px) {
+    [data-testid="column"] {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+    }
+    [data-testid="stMetricValue"] { font-size: 1.4rem !important; }
+    [data-testid="stDataFrame"] { overflow-x: auto !important; }
+    .stButton > button { width: 100% !important; min-height: 48px !important; }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -54,7 +64,7 @@ st.warning(
 )
 
 # ── Inputs ────────────────────────────────────────────────────────────────────
-col1, col2, col3 = st.columns([2, 1, 1])
+col1, col2 = st.columns([2, 1])
 
 with col1:
     send_amount = st.number_input(
@@ -68,13 +78,10 @@ with col1:
 
 with col2:
     currency = st.selectbox(
-        "Currency",
+        "Currency → KES",
         options=["USD", "GBP", "EUR", "CAD", "AUD", "AED"],
         index=0,
     )
-
-with col3:
-    st.text_input("Recipient gets", value="KES", disabled=True)
 
 # Provider filter
 with st.expander("Filter providers"):
@@ -95,40 +102,42 @@ except Exception as e:
 st.markdown("---")
 st.markdown("### Best options")
 
-c1, c2, c3 = st.columns(3)
-
+cards_html = '<div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:0.5rem;">'
+highlight_cards = []
 if result.best_rate:
-    with c1:
-        q = result.best_rate
-        delta = q.receive_amount - (send_amount * result.mid_market_rate)
-        st.metric(
-            f"💰 Best amount — {q.provider}",
-            f"KES {q.receive_amount:,.0f}",
-            delta=f"{delta:,.0f} vs mid-market",
-            delta_color="normal",
-        )
-        if q.url:
-            st.markdown(f"[Send with {q.provider} →]({q.url})")
-
+    q = result.best_rate
+    delta = q.receive_amount - (send_amount * result.mid_market_rate)
+    link = f'<a href="{q.url}" target="_blank" style="font-size:0.8rem;color:#1a73e8;">Send with {q.provider} →</a>' if q.url else ""
+    highlight_cards.append(
+        f'<div style="flex:1 1 180px;min-width:160px;background:#e8f5e9;border-left:4px solid #1a73e8;'
+        f'border-radius:8px;padding:1rem;">'
+        f'<div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-bottom:0.25rem;">💰 Best amount — {q.provider}</div>'
+        f'<div style="font-size:1.5rem;font-weight:800;color:#1a1a1a;">KES {q.receive_amount:,.0f}</div>'
+        f'<div style="font-size:0.8rem;color:#2e7d32;margin-top:0.2rem;">+{delta:,.0f} vs mid-market</div>'
+        f'{link}</div>'
+    )
 if result.fastest:
-    with c2:
-        q = result.fastest
-        st.metric(
-            f"⚡ Fastest — {q.provider}",
-            f"KES {q.receive_amount:,.0f}",
-            delta=q.transfer_time,
-            delta_color="off",
-        )
-
+    q = result.fastest
+    highlight_cards.append(
+        f'<div style="flex:1 1 180px;min-width:160px;background:#fffde7;border-left:4px solid #fbbc04;'
+        f'border-radius:8px;padding:1rem;">'
+        f'<div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-bottom:0.25rem;">⚡ Fastest — {q.provider}</div>'
+        f'<div style="font-size:1.5rem;font-weight:800;color:#1a1a1a;">KES {q.receive_amount:,.0f}</div>'
+        f'<div style="font-size:0.8rem;color:#856404;margin-top:0.2rem;">{q.transfer_time}</div>'
+        f'</div>'
+    )
 if result.most_trusted:
-    with c3:
-        q = result.most_trusted
-        st.metric(
-            f"📱 Best to M-Pesa — {q.provider}",
-            f"KES {q.receive_amount:,.0f}",
-            delta=f"{q.true_cost_percent:.1f}% true cost",
-            delta_color="inverse",
-        )
+    q = result.most_trusted
+    highlight_cards.append(
+        f'<div style="flex:1 1 180px;min-width:160px;background:#e3f2fd;border-left:4px solid #4CAF50;'
+        f'border-radius:8px;padding:1rem;">'
+        f'<div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-bottom:0.25rem;">📱 Best to M-Pesa — {q.provider}</div>'
+        f'<div style="font-size:1.5rem;font-weight:800;color:#1a1a1a;">KES {q.receive_amount:,.0f}</div>'
+        f'<div style="font-size:0.8rem;color:#c62828;margin-top:0.2rem;">{q.true_cost_percent:.1f}% true cost</div>'
+        f'</div>'
+    )
+cards_html += "".join(highlight_cards) + "</div>"
+st.markdown(cards_html, unsafe_allow_html=True)
 
 # ── Mid-market context ────────────────────────────────────────────────────────
 st.markdown("---")
