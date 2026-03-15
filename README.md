@@ -1,10 +1,13 @@
-# RemitLens
+# 💸 TumaPesa — Send Money to Kenya
 
 **Find the best way to send money to Kenya.**
 
+[![Live App](https://img.shields.io/badge/Live%20App-remit--lens.streamlit.app-FF4B4B?logo=streamlit)](https://remit-lens.streamlit.app)
 [![Tests](https://img.shields.io/badge/tests-19%20passing-brightgreen)](https://github.com/gabrielmahia/remit-lens/actions)
 [![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-ESTIMATES%20ONLY-orange)](#disclaimer)
+
+> **Tuma Pesa** /tumɑː pesɑː/ — *Kiswahili*: "Send money".
 
 Compares the **true cost** of sending money to Kenya across major remittance providers. True cost = fee + exchange rate spread — because a "zero fee" provider often charges through a worse exchange rate.
 
@@ -70,3 +73,24 @@ CC BY-NC-ND 4.0 — personal and educational use free. Commercial use: contact@a
 ---
 
 *Built by a Kenyan diaspora engineer who has sent money home too many times to count without knowing if he was getting a fair rate.*
+---
+
+## Portfolio
+
+Part of a suite of civic and community tools built by [Gabriel Mahia](https://github.com/gabrielmahia):
+
+| App | What it does |
+|-----|-------------|
+| [🌊 Mafuriko](https://floodwatch-kenya.streamlit.app) | Flood risk & policy enforcement tracker — Kenya |
+| [💧 WapiMaji](https://wapimaji.streamlit.app) | Water stress & drought intelligence — 47 counties |
+| [🏛️ Macho ya Wananchi](https://civic-decoder.streamlit.app) | MP voting records, CDF spending, bill tracker |
+| [🌾 JuaMazao](https://mazao-intel.streamlit.app) | Live food price intelligence for smallholders |
+| [🏦 ChaguaSacco](https://sacco-scout.streamlit.app) | Compare Kenya SACCOs on dividends & loan rates |
+| [🛡️ Hesabu](https://budget-sentinel.streamlit.app) | County budget absorption tracker |
+| [🗺️ Hifadhi](https://hifadhi.streamlit.app) | Riparian encroachment & Water Act compliance map |
+| [💰 Hela](https://hela.streamlit.app) | Chama management for the 21st century |
+| [💸 TumaPesa](https://remit-lens.streamlit.app) | True cost remittance comparison — diaspora to Kenya |
+| [📊 Msimamo](https://quantum-maestro.streamlit.app) | Macro risk & trade intelligence terminal |
+| [🦁 Dagoretti](https://dagoretti-community-hub.streamlit.app) | Alumni atlas & community hub for Dagoretti High |
+| [⛪ Jumuia](https://catholicparishsteward.streamlit.app) | Catholic parish tools — church finder, pastoral care |
+
