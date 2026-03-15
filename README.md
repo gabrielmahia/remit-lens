@@ -1,4 +1,4 @@
-# 💸 TumaPesa — Send Money to Kenya
+# 💸 Peleka — Send Money to Kenya
 
 **Find the best way to send money to Kenya.**
 
@@ -7,7 +7,7 @@
 [![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-ESTIMATES%20ONLY-orange)](#disclaimer)
 
-> **Tuma Pesa** /tumɑː pesɑː/ — *Kiswahili*: "Send money".
+> **Peleka** /pelekɑː/ — *Kiswahili*: "send it", dispatch, deliver.
 
 Compares the **true cost** of sending money to Kenya across major remittance providers. True cost = fee + exchange rate spread — because a "zero fee" provider often charges through a worse exchange rate.
 
@@ -89,7 +89,6 @@ Part of a suite of civic and community tools built by [Gabriel Mahia](https://gi
 | [🛡️ Hesabu](https://budget-sentinel.streamlit.app) | County budget absorption tracker |
 | [🗺️ Hifadhi](https://hifadhi.streamlit.app) | Riparian encroachment & Water Act compliance map |
 | [💰 Hela](https://hela.streamlit.app) | Chama management for the 21st century |
-| [💸 TumaPesa](https://remit-lens.streamlit.app) | True cost remittance comparison — diaspora to Kenya |
 | [📊 Msimamo](https://quantum-maestro.streamlit.app) | Macro risk & trade intelligence terminal |
 | [🦁 Dagoretti](https://dagoretti-community-hub.streamlit.app) | Alumni atlas & community hub for Dagoretti High |
 | [⛪ Jumuia](https://catholicparishsteward.streamlit.app) | Catholic parish tools — church finder, pastoral care |
