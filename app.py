@@ -7,6 +7,28 @@ across major providers: Wise, Remitly, Sendwave, WorldRemit, Western Union, and 
 import streamlit as st
 from remit.compare import compare, _PROVIDER_PROFILES
 
+
+@st.cache_data(ttl=86400)
+def fetch_remittance_benchmark():
+    """World Bank average cost of receiving remittances to Kenya — G20 benchmark."""
+    try:
+        import urllib.request as _ur, json as _jrm
+        url = ("https://api.worldbank.org/v2/country/KE/indicator/SI.RMT.COST.OB.ZS"
+               "?format=json&mrv=3&per_page=3")
+        with _ur.urlopen(url, timeout=12) as r:
+            d = _jrm.loads(r.read())
+        entries = [e for e in (d[1] if len(d) > 1 else []) if e.get("value")]
+        if entries:
+            return {
+                "cost_pct": round(entries[0]["value"], 2),
+                "year":     entries[0].get("date", "?"),
+                "g20_target": 3.0,
+                "live": True,
+            }
+    except Exception:
+        pass
+    return {"cost_pct": 5.26, "year": "2023", "g20_target": 3.0, "live": False}
+
 st.set_page_config(
     page_title="Peleka — Send Money to Kenya",
     page_icon="💸",
@@ -200,6 +222,16 @@ for i, q in enumerate(ranked):
 import pandas as pd
 df = pd.DataFrame(table_data)
 st.dataframe(df, use_container_width=True, hide_index=True)
+
+# ── World Bank benchmark ─────────────────────────────────────────────────
+_wb_rem = fetch_remittance_benchmark()
+_src_lbl = "📡 World Bank live" if _wb_rem.get("live") else "📋 World Bank 2023"
+st.info(
+    f"**{_src_lbl} · Average cost to receive remittances to Kenya: "
+    f"{_wb_rem['cost_pct']}% ({_wb_rem['year']})** — "
+    f"G20 target is {_wb_rem['g20_target']}%. "
+    f"Compare your provider's true cost % above against this benchmark."
+)
 
 # ── What "true cost" means ───────────────────────────────────────────────────
 with st.expander("What is 'true cost %'?"):
