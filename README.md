@@ -3,6 +3,7 @@
 **Find the best way to send money to Kenya.**
 
 [![Live App](https://img.shields.io/badge/Live%20App-remit--lens.streamlit.app-FF4B4B?logo=streamlit)](https://remit-lens.streamlit.app)
+[![Live Data](https://img.shields.io/badge/Live%20Data-open.er-api.com%20%C2%B7%20World%20Bank-00b4d8)](#remit-lens)
 [![Tests](https://img.shields.io/badge/tests-19%20passing-brightgreen)](https://github.com/gabrielmahia/remit-lens/actions)
 [![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-ESTIMATES%20ONLY-orange)](#disclaimer)
