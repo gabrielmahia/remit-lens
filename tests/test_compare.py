@@ -2,7 +2,6 @@
 import pytest
 from remit.compare import Quote, Comparison, compare, get_mid_market_rate
 from unittest.mock import patch
-from datetime import datetime, timezone
 
 
 def _mock_rate(from_currency: str, to_currency: str = "KES") -> float:

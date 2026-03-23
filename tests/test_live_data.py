@@ -1,5 +1,5 @@
 """Smoke tests for live data functions — remit-lens."""
-import sys, os
+import sys
 sys.path.insert(0, "/tmp/remit-lens")
 import unittest.mock as mock
 
