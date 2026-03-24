@@ -30,7 +30,7 @@ def fetch_remittance_benchmark():
     return {"cost_pct": 5.26, "year": "2023", "g20_target": 3.0, "live": False}
 
 st.set_page_config(
-    page_title="Peleka — Send Money to Kenya",
+    page_title="TumaPesa — Send Money to Kenya",
     page_icon="💸",
     layout="centered",
 )
@@ -77,11 +77,28 @@ st.markdown("""
         [data-testid="stMetricValue"] { font-size: 1rem !important; }
         .stButton > button { min-height: 52px !important; font-size: 0.95rem !important; }
     }
+
+    /* Metric text — explicit colours, light + dark (both OS pref and Streamlit toggle) */
+    [data-testid="stMetricLabel"]  { color: #444444 !important; font-size: 0.8rem !important; }
+    [data-testid="stMetricValue"]  { color: #111111 !important; font-weight: 700 !important; }
+    [data-testid="stMetricDelta"]  { color: #333333 !important; }
+    @media (prefers-color-scheme: dark) {
+        [data-testid="stMetricLabel"] { color: #aaaaaa !important; }
+        [data-testid="stMetricValue"] { color: #f0f0f0 !important; }
+        [data-testid="stMetricDelta"] { color: #cccccc !important; }
+    }
+    [data-theme="dark"] [data-testid="stMetricLabel"],
+    .stApp[data-theme="dark"] [data-testid="stMetricLabel"] { color: #aaaaaa !important; }
+    [data-theme="dark"] [data-testid="stMetricValue"],
+    .stApp[data-theme="dark"] [data-testid="stMetricValue"] { color: #f0f0f0 !important; }
+    [data-theme="dark"] [data-testid="stMetricDelta"],
+    .stApp[data-theme="dark"] [data-testid="stMetricDelta"] { color: #cccccc !important; }
+
 </style>
 """, unsafe_allow_html=True)
 
 # ── Header ────────────────────────────────────────────────────────────────────
-st.title("💸 Peleka")
+st.title("💸 TumaPesa — Send Money to Kenya")
 st.subheader("Find the best way to send money to Kenya")
 
 st.warning(

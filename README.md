@@ -1,4 +1,4 @@
-# 💸 Peleka — Send Money to Kenya
+# 💸 TumaPesa — Send Money to Kenya
 
 **Find the best way to send money to Kenya.**
 
@@ -8,7 +8,7 @@
 [![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-ESTIMATES%20ONLY-orange)](#disclaimer)
 
-> **Peleka** /pelekɑː/ — *Kiswahili*: "send it", dispatch, deliver.
+> **TumaPesa** /pelekɑː/ — *Kiswahili*: "send it", dispatch, deliver.
 
 Compares the **true cost** of sending money to Kenya across major remittance providers. True cost = fee + exchange rate spread — because a "zero fee" provider often charges through a worse exchange rate.
 
