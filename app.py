@@ -94,6 +94,16 @@ st.markdown("""
     [data-theme="dark"] [data-testid="stMetricDelta"],
     .stApp[data-theme="dark"] [data-testid="stMetricDelta"] { color: #cccccc !important; }
 
+
+    @media (prefers-color-scheme: dark) {
+        .metric-card { background: #1a2535 !important; border-color: #4CAF50 !important; color: #d0e8ff !important; }
+        .best        { color: #7ab8f5 !important; }
+        .badge       { background: #0d2518 !important; color: #7dcea0 !important; }
+    }
+    [data-theme="dark"] .metric-card, .stApp[data-theme="dark"] .metric-card { background: #1a2535 !important; border-color: #4CAF50 !important; color: #d0e8ff !important; }
+    [data-theme="dark"] .best,        .stApp[data-theme="dark"] .best        { color: #7ab8f5 !important; }
+    [data-theme="dark"] .badge,       .stApp[data-theme="dark"] .badge       { background: #0d2518 !important; color: #7dcea0 !important; }
+
 </style>
 """, unsafe_allow_html=True)
 
