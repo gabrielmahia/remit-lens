@@ -287,7 +287,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown(
         "**Was this useful?**\n\n"
-        "[:pencil: Leave feedback](https://docs.google.com/forms/d/1rQ8XKzaSDbSu4nOURgwXBrg2VogHUTf7I77DG83hAcY/viewform) (2 min)\n\n"
+        "[:pencil: Leave feedback](https://docs.google.com/forms/d/e/1FAIpQLSff_cjR102HNUeYU428ROv56TScLBzsQRc1JTwY4wGizvTQKw/viewform) (2 min)\n\n"
         "[:bug: Report a bug](https://github.com/gabrielmahia/remit-lens/issues/new)\n\n"
         "---\n"
         "*Built by [Gabriel Mahia](https://aikungfu.dev)*\n\n"
