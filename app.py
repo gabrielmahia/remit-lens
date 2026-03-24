@@ -71,6 +71,12 @@ st.markdown("""
     [data-testid="stDataFrame"] { overflow-x: auto !important; }
     .stButton > button { width: 100% !important; min-height: 48px !important; }
 }
+    @media (max-width: 480px) {
+        h1 { font-size: 1.4rem !important; }
+        h2 { font-size: 1.15rem !important; }
+        [data-testid="stMetricValue"] { font-size: 1rem !important; }
+        .stButton > button { min-height: 52px !important; font-size: 0.95rem !important; }
+    }
 </style>
 """, unsafe_allow_html=True)
 
