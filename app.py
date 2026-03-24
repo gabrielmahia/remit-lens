@@ -282,3 +282,14 @@ RemitLens is not affiliated with any provider. No transfers are processed throug
 Always verify on the provider's website before sending money.
 </div>
 """, unsafe_allow_html=True)
+# -- Feedback sidebar ---------------------------------------------------------
+with st.sidebar:
+    st.markdown("---")
+    st.caption(
+        "**Useful? Found a bug?**\n\n"
+        "Email: contact@aikungfu.dev\n\n"
+        "GitHub: [Report issue](https://github.com/gabrielmahia/remit-lens/issues/new)\n\n"
+        "---\n"
+        "*Built by [Gabriel Mahia](https://aikungfu.dev)*\n\n"
+        "[Back to all tools](https://gabrielmahia.github.io)"
+    )
