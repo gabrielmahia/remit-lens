@@ -1,7 +1,9 @@
 """remit-lens unit tests — no network calls."""
-import pytest
-from remit.compare import Quote, Comparison, compare, get_mid_market_rate
 from unittest.mock import patch
+
+import pytest
+
+from remit.compare import Comparison, Quote, compare, get_mid_market_rate
 
 
 def _mock_rate(from_currency: str, to_currency: str = "KES") -> float:
@@ -11,19 +13,19 @@ def _mock_rate(from_currency: str, to_currency: str = "KES") -> float:
 
 class TestQuote:
     def _make_quote(self, **kwargs) -> Quote:
-        defaults = dict(
-            provider="TestProvider",
-            send_currency="USD",
-            receive_currency="KES",
-            send_amount=200.0,
-            receive_amount=25_000.0,
-            fee=3.99,
-            exchange_rate=127.00,
-            mid_market_rate=129.50,
-            spread_percent=1.93,
-            transfer_time="minutes",
-            delivery_method="M-Pesa",
-        )
+        defaults = {
+            "provider": "TestProvider",
+            "send_currency": "USD",
+            "receive_currency": "KES",
+            "send_amount": 200.0,
+            "receive_amount": 25_000.0,
+            "fee": 3.99,
+            "exchange_rate": 127.00,
+            "mid_market_rate": 129.50,
+            "spread_percent": 1.93,
+            "transfer_time": "minutes",
+            "delivery_method": "M-Pesa",
+        }
         defaults.update(kwargs)
         return Quote(**defaults)
 
@@ -170,10 +172,10 @@ class TestRateFallback:
     def test_fallback_returns_nonzero_for_usd(self):
         # Test that if API fails, fallback works
         with patch("urllib.request.urlopen", side_effect=Exception("network error")):
-            rate, source = get_mid_market_rate("USD", "KES")
+            rate, _source = get_mid_market_rate("USD", "KES")
         assert rate > 0
 
     def test_fallback_gbp_kes(self):
         with patch("urllib.request.urlopen", side_effect=Exception("network error")):
-            rate, source = get_mid_market_rate("GBP", "KES")
+            rate, _source = get_mid_market_rate("GBP", "KES")
         assert rate > 130  # GBP/KES is always > 130

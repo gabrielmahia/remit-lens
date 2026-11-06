@@ -2,24 +2,29 @@
 remit-lens unit tests.
 Exchange rate API tests use fallback rates (no network calls required).
 """
-import pytest
 from unittest.mock import patch
-from remit.compare import (
-    Quote, Comparison, compare, get_mid_market_rate, _PROVIDER_PROFILES
-)
 
+import pytest
+
+from remit.compare import (
+    _PROVIDER_PROFILES,
+    Comparison,
+    Quote,
+    compare,
+    get_mid_market_rate,
+)
 
 # ── Quote calculations ────────────────────────────────────────────────────────
 
 class TestQuote:
     def _make(self, **kwargs):
-        defaults = dict(
-            provider="Wise", send_currency="USD", receive_currency="KES",
-            send_amount=200.0, receive_amount=25_600.0,
-            fee=0.82, exchange_rate=128.5, mid_market_rate=129.5,
-            spread_percent=0.77, transfer_time="minutes",
-            delivery_method="M-Pesa, Bank deposit",
-        )
+        defaults = {
+            "provider": "Wise", "send_currency": "USD", "receive_currency": "KES",
+            "send_amount": 200.0, "receive_amount": 25_600.0,
+            "fee": 0.82, "exchange_rate": 128.5, "mid_market_rate": 129.5,
+            "spread_percent": 0.77, "transfer_time": "minutes",
+            "delivery_method": "M-Pesa, Bank deposit",
+        }
         defaults.update(kwargs)
         return Quote(**defaults)
 
@@ -148,5 +153,5 @@ class TestMidMarketRate:
 
     @patch("urllib.request.urlopen", side_effect=Exception("network down"))
     def test_fallback_gbp_kes(self, _mock):
-        rate, source = get_mid_market_rate("GBP", "KES")
+        rate, _source = get_mid_market_rate("GBP", "KES")
         assert rate > 100  # GBP is worth more than 100 KES
