@@ -1,4 +1,4 @@
 """remit-lens — diaspora remittance comparison for Kenya."""
-from remit.compare import compare, Quote, Comparison
+from remit.compare import Comparison, Quote, compare
 
-__all__ = ["compare", "Quote", "Comparison"]
+__all__ = ["Comparison", "Quote", "compare"]

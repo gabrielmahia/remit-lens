@@ -9,11 +9,11 @@ or from manually maintained rate tables updated daily. All data is
 clearly timestamped and labelled ESTIMATED until verified against live quotes.
 """
 from __future__ import annotations
+
+import json
+import urllib.request
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-import urllib.request
-import json
-
 
 # ── Data types ────────────────────────────────────────────────────────────────
 
@@ -124,7 +124,7 @@ def get_mid_market_rate(from_currency: str, to_currency: str = "KES") -> tuple[f
         if rate and isinstance(rate, (int, float)) and rate > 0:
             updated = data.get("time_last_update_utc", "")[:16]
             return float(rate), f"live ({updated} UTC)"
-    except Exception:
+    except Exception:  # noqa: BLE001, S110 - any failure means the stored fallback rate, which the caller labels 'verify before sending'
         pass
     fallback_rate = FALLBACKS.get((from_currency, to_currency), 0.0)
     return fallback_rate, "fallback — verify before sending"
