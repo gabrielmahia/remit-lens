@@ -5,7 +5,7 @@
 [![Live App](https://img.shields.io/badge/Live%20App-remit--lens.streamlit.app-FF4B4B?logo=streamlit)](https://tumapesa.streamlit.app)
 [![Live Data](https://img.shields.io/badge/Live%20Data-open.er-api.com%20%C2%B7%20World%20Bank-00b4d8)](#remit-lens)
 [![Tests](https://img.shields.io/badge/tests-19%20passing-brightgreen)](https://github.com/gabrielmahia/remit-lens/actions)
-[![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](LICENSE)
+[![License: PolyForm Noncommercial](https://img.shields.io/badge/License-PolyForm%20Noncommercial%201.0.0-blue.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-ESTIMATES%20ONLY-orange)](#disclaimer)
 
 > **TumaPesa** /pelekɑː/ — *Kiswahili*: "send it", dispatch, deliver.
@@ -69,7 +69,7 @@ Open an issue. PRs welcome, especially for:
 
 ## License
 
-CC BY-NC-ND 4.0 — personal and educational use free. Commercial use: contact@aikungfu.dev.
+PolyForm Noncommercial 1.0.0 — free for personal, research, educational, nonprofit and government use, including modifying it for those purposes. Commercial use needs a separate licence: contact@aikungfu.dev.
 
 ---
 
